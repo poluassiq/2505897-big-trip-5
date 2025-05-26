@@ -1,7 +1,6 @@
 import PointRouteView from '../view/point-of-route-view.js';
 import { render, replace, remove } from '../framework/render.js';
 import FormEditingView from '../view/editing-form-view.js';
-
 import { MODE, ACTIONS, UPDATE_TYPES } from '../const.js';
 import { isSameDate, isEscapeKey } from '../utils/point-utils.js';
 
@@ -54,9 +53,8 @@ export default class PointPresenter {
       },
       onSubmitButtonClick: async (value) => {
         const isMinor = !isSameDate(value.dateFrom, this.#point.dateFrom) ||
-        !isSameDate(value.dateTo, this.#point.dateTo);
+        !isSameDate(value.dateTo, this.#point.dateTo) || value.basePrice !== this.#point.basePrice;
         await this.#updateData(ACTIONS.UPDATE_POINT, isMinor ? UPDATE_TYPES.MINOR : UPDATE_TYPES.PATCH, value);
-
       },
       onDeleteClick: async (value) => {
         await this.#updateData(ACTIONS.DELETE_POINT, UPDATE_TYPES.MINOR, value);
@@ -111,6 +109,11 @@ export default class PointPresenter {
   }
 
   setAborting() {
+    if (this.#mode === MODE.DEFAULT) {
+      this.#pointItem.shake();
+      return;
+    }
+
     const resetFormState = () => {
       this.#editFormItem.updateElement({
         isDisabled: false,
