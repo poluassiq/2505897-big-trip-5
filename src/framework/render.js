@@ -62,24 +62,19 @@ function replace(newComponent, oldComponent) {
 
 /**
  * Функция для удаления компонента
- * @param {AbstractView} componentOrComponents Компонент или компоненты, который нужно удалить
+ * @param {AbstractView} component Компонент, который нужно удалить
  */
-function remove(componentOrComponents) {
-  if (Array.isArray(componentOrComponents)) {
-    componentOrComponents.forEach(remove);
+function remove(component) {
+  if (component === null) {
     return;
   }
 
-  if (componentOrComponents === null) {
-    return;
-  }
-
-  if (!(componentOrComponents instanceof AbstractView)) {
+  if (!(component instanceof AbstractView)) {
     throw new Error('Can remove only components');
   }
 
-  componentOrComponents.element.remove();
-  componentOrComponents.removeElement();
+  component.element.remove();
+  component.removeElement();
 }
 
 export {RenderPosition, createElement, render, replace, remove};
